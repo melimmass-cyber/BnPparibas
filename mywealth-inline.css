@@ -1,0 +1,9 @@
+.site-header .brand { display:flex; align-items:center; gap:13px; flex:0 0 auto; color:#000; text-decoration:none; }
+      .site-header .brand-symbol { position:relative; display:block; flex:0 0 56px; width:56px; height:56px; overflow:hidden; }
+      .site-header .brand-symbol img { position:absolute; top:-29px; left:-41px; width:109px; height:109px; max-width:none; }
+      .brand-wordmark { display:block; line-height:.94; white-space:nowrap; }
+      .brand-wordmark strong { display:block; font-size:24px; font-weight:800; letter-spacing:.015em; }
+      .brand-wordmark small { display:block; margin-top:5px; font-size:16px; font-weight:800; letter-spacing:.02em; }
+      @media (max-width:1030px) { .site-header .brand-symbol { flex-basis:46px; width:46px; height:46px; } .site-header .brand-symbol img { top:-24px; left:-34px; width:90px; height:90px; } .brand-wordmark strong { font-size:19px; } .brand-wordmark small { font-size:12px; } }
+      @media (max-width:760px) { .site-header .brand-symbol { flex-basis:39px; width:39px; height:39px; } .site-header .brand-symbol img { top:-20px; left:-29px; width:76px; height:76px; } .brand-wordmark strong { font-size:15px; } .brand-wordmark small { margin-top:3px; font-size:9px; } }
+      @media (max-width:430px) { .site-header .brand-symbol { flex-basis:34px; width:34px; height:34px; } .site-header .brand-symbol img { top:-18px; left:-25px; width:67px; height:67px; } .brand-wordmark strong { font-size:13px; } .brand-wordmark small { font-size:8px; } }

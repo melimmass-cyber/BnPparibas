@@ -6,17 +6,7 @@
     <title>myWealth | BNP Paribas Wealth Management</title>
     <link rel="stylesheet" href="./mywealth.css" />
     <link rel="stylesheet" href="./mobile-refinements.css" />
-    <style>
-      .site-header .brand { display:flex; align-items:center; gap:13px; flex:0 0 auto; color:#000; text-decoration:none; }
-      .site-header .brand-symbol { position:relative; display:block; flex:0 0 56px; width:56px; height:56px; overflow:hidden; }
-      .site-header .brand-symbol img { position:absolute; top:-29px; left:-41px; width:109px; height:109px; max-width:none; }
-      .brand-wordmark { display:block; line-height:.94; white-space:nowrap; }
-      .brand-wordmark strong { display:block; font-size:24px; font-weight:800; letter-spacing:.015em; }
-      .brand-wordmark small { display:block; margin-top:5px; font-size:16px; font-weight:800; letter-spacing:.02em; }
-      @media (max-width:1030px) { .site-header .brand-symbol { flex-basis:46px; width:46px; height:46px; } .site-header .brand-symbol img { top:-24px; left:-34px; width:90px; height:90px; } .brand-wordmark strong { font-size:19px; } .brand-wordmark small { font-size:12px; } }
-      @media (max-width:760px) { .site-header .brand-symbol { flex-basis:39px; width:39px; height:39px; } .site-header .brand-symbol img { top:-20px; left:-29px; width:76px; height:76px; } .brand-wordmark strong { font-size:15px; } .brand-wordmark small { margin-top:3px; font-size:9px; } }
-      @media (max-width:430px) { .site-header .brand-symbol { flex-basis:34px; width:34px; height:34px; } .site-header .brand-symbol img { top:-18px; left:-25px; width:67px; height:67px; } .brand-wordmark strong { font-size:13px; } .brand-wordmark small { font-size:8px; } }
-    </style>
+    <link rel="stylesheet" href="./mywealth-inline.css">
       <meta name="robots" content="noindex,nofollow">
   <link rel="stylesheet" href="./portal-polish.css">
 </head>
@@ -70,31 +60,6 @@
     <footer class="site-footer"><nav aria-label="Support links"><button type="button" data-modal="security">Security</button><button type="button" data-modal="legal">Legal information</button><button type="button" data-modal="cookies">Cookies</button><button type="button" data-modal="assistance">Help &amp; Contact</button><button type="button" data-modal="assistance">Digital Support</button></nav><p>© 2026 BNP Paribas Wealth Management. <span data-t="rights">All rights reserved.</span></p></footer>
 
     <dialog id="info-modal" class="dialog-card" aria-labelledby="modal-title"><button class="dialog-close" type="button" aria-label="Close">×</button><div class="dialog-qr" hidden><span class="qr-icon" aria-hidden="true"></span></div><h2 id="modal-title"></h2><p id="modal-copy"></p><button class="dialog-action" type="button">Close</button></dialog>
-    <script>
-      const words = {
-        en: { statement:'The bank<br>for a changing world', language:'Choose your language', welcome:'Welcome to', privateBank:'Your online private bank', wealthCopy:'Manage your wealth<br>simply and securely.', benefitOne:'A complete view<br>of your assets', benefitTwo:'Secure and<br>reliable access', benefitThree:'A dedicated team<br>by your side', accessTitle:'Access your accounts', accessSubtitle:'Enter your client identifier to continue.', clientLabel:'Client / User ID', continue:'Continue', or:'or', qrTitle:'Log in with QR code', qrSubtitle:'Use the BNP Paribas myWealth app', helpTitle:'Need help logging in?', forgot:"I've forgotten my identifier", assistance:'I need assistance', securityTitle:'Your security is our priority', securityCopy:'myWealth uses multi-factor authentication to protect your data and transactions.', securityLink:'Learn more about security', sustainable:'BUILDING A SUSTAINABLE TOMORROW', rights:'All rights reserved.', placeholder:'Enter your identifier' },
-        fr: { statement:'La banque<br>pour un monde qui change', language:'Choisissez votre langue', welcome:'Bienvenue dans', privateBank:'Votre banque privée en ligne', wealthCopy:'Gérez votre patrimoine<br>simplement et en toute sécurité.', benefitOne:'Une vision complète<br>de vos avoirs', benefitTwo:'Un accès sûr<br>et fiable', benefitThree:'Une équipe dédiée<br>à vos côtés', accessTitle:'Accédez à vos comptes', accessSubtitle:'Saisissez votre identifiant client pour continuer.', clientLabel:'Identifiant client / utilisateur', continue:'Continuer', or:'ou', qrTitle:'Connexion par QR code', qrSubtitle:"Utilisez l’application BNP Paribas myWealth", helpTitle:'Besoin d’aide pour vous connecter ?', forgot:"J’ai oublié mon identifiant", assistance:"J’ai besoin d’assistance", securityTitle:'Votre sécurité est notre priorité', securityCopy:'myWealth utilise une authentification à plusieurs facteurs pour protéger vos données.', securityLink:'En savoir plus sur la sécurité', sustainable:'CONSTRUIRE UN AVENIR DURABLE', rights:'Tous droits réservés.', placeholder:'Saisissez votre identifiant' },
-        de: { statement:'Die Bank<br>für eine Welt im Wandel', language:'Wählen Sie Ihre Sprache', welcome:'Willkommen bei', privateBank:'Ihre Online-Privatbank', wealthCopy:'Verwalten Sie Ihr Vermögen<br>einfach und sicher.', benefitOne:'Ein vollständiger Überblick<br>über Ihre Vermögenswerte', benefitTwo:'Sicherer und<br>zuverlässiger Zugang', benefitThree:'Ein persönliches Team<br>an Ihrer Seite', accessTitle:'Zugang zu Ihren Konten', accessSubtitle:'Geben Sie Ihre Kundenkennung ein, um fortzufahren.', clientLabel:'Kunden- / Benutzerkennung', continue:'Weiter', or:'oder', qrTitle:'Mit QR-Code anmelden', qrSubtitle:'Nutzen Sie die BNP Paribas myWealth App', helpTitle:'Brauchen Sie Hilfe bei der Anmeldung?', forgot:'Ich habe meine Kennung vergessen', assistance:'Ich benötige Unterstützung', securityTitle:'Ihre Sicherheit hat Priorität', securityCopy:'myWealth verwendet eine Mehrfaktor-Authentifizierung zum Schutz Ihrer Daten.', securityLink:'Mehr über Sicherheit erfahren', sustainable:'EINE NACHHALTIGE ZUKUNFT GESTALTEN', rights:'Alle Rechte vorbehalten.', placeholder:'Geben Sie Ihre Kennung ein' }
-      };
-      const identifier = document.getElementById('client-id');
-      const setLoginMessage = (text, tone = '') => {
-        const message = document.getElementById('login-message');
-        message.textContent = text;
-        message.classList.toggle('is-progress', tone === 'progress');
-        message.classList.toggle('is-error', tone === 'error');
-      };
-      document.querySelectorAll('[data-locale]').forEach(tab => tab.addEventListener('click', () => { const locale = tab.dataset.locale, set = words[locale]; document.documentElement.lang = locale; document.querySelectorAll('[data-t]').forEach(el => el.innerHTML = set[el.dataset.t]); identifier.placeholder = set.placeholder; document.querySelectorAll('[data-locale]').forEach(item => { const selected = item === tab; item.classList.toggle('active', selected); item.setAttribute('aria-selected', selected); }); }));
-      setLoginMessage('Please verify your client credentials to initiate secure authentication.');
-      document.getElementById('login-form').addEventListener('submit', event => {
-        event.preventDefault();
-        setLoginMessage('Starting the Luxtrust authentication sequence…', 'progress');
-        window.location.assign('./authentication.html');
-      });
-      const modal = document.getElementById('info-modal'), modalTitle = document.getElementById('modal-title'), modalCopy = document.getElementById('modal-copy'), modalQr = modal.querySelector('.dialog-qr');
-      const modals = { qr:['Open myWealth on your device','Use the myWealth app to scan this code and continue securely on your registered device.',true], identifier:['Find your identifier','Your client identifier is included in your myWealth welcome information. For help locating it, contact your relationship manager.'], assistance:['We are here to help','Client support is available Monday to Friday, from 08:00 to 18:00 CET. Your relationship manager can also assist with access to myWealth.'], security:['Security for your myWealth access','Always verify the website address before signing in. myWealth never asks you to share a security code by phone or email.'], legal:['Legal information','This interactive page is an illustrative myWealth experience. For account-specific information, contact your relationship manager.'], cookies:['Cookies','This local demonstration stores no login identifier and does not use optional cookies for sign-in.'] };
-      document.querySelectorAll('[data-modal]').forEach(button => button.addEventListener('click', () => { const item = modals[button.dataset.modal]; modalTitle.textContent = item[0]; modalCopy.textContent = item[1]; modalQr.hidden = !item[2]; modal.showModal(); }));
-      modal.querySelectorAll('.dialog-close,.dialog-action').forEach(button => button.addEventListener('click', () => modal.close())); modal.addEventListener('click', event => { if (event.target === modal) modal.close(); });
-      document.getElementById('help-toggle').addEventListener('click', event => { const open = event.currentTarget.getAttribute('aria-expanded') === 'true'; event.currentTarget.setAttribute('aria-expanded', !open); document.getElementById('help-links').hidden = open; });
-    </script>
+    <script type="module" src="./mywealth-inline.js"></script>
   </body>
 </html>
