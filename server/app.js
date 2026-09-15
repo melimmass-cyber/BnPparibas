@@ -1,9 +1,15 @@
 import Fastify, { LogController } from 'fastify';
 import cookie from '@fastify/cookie';
 import helmet from '@fastify/helmet';
+import fastifyStatic from '@fastify/static';
 import { randomUUID } from 'node:crypto';
 import { readFile } from 'node:fs/promises';
+import { dirname, join } from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { token, validToken, seal, unseal, equal } from './crypto.js';
+
+const __dirname = dirname(fileURLToPath(import.meta.url));
+const frontendRoot = join(__dirname, '..', 'dist');
 
 export async function buildApp({ config, store, identity, logger = true }) {
   const app = Fastify({
@@ -27,6 +33,11 @@ export async function buildApp({ config, store, identity, logger = true }) {
     strictTransportSecurity: secure ? { maxAge: 31536000 } : false,
     referrerPolicy: { policy: 'no-referrer' },
   });
+await app.register(fastifyStatic, {
+  root: frontendRoot,
+  prefix: '/',
+  index: ['index.html'],
+});
   app.decorateRequest('portalSession', null);
   app.addHook('onRequest', async (request, reply) => {
     reply.header('Cache-Control', 'no-store').header('X-Request-Id', request.id);
@@ -143,12 +154,12 @@ export async function buildApp({ config, store, identity, logger = true }) {
   for (const path of ['/api/login', '/api/access', '/api/verify-mfa', '/api/check-device', '/api/admin/reset-mfa']) {
     app.post(path, async (request, reply) => fail(reply, 410, 'DEMO_AUTHENTICATION_REMOVED'));
   }
-  const page = await readFile(new URL('./public/index.html', import.meta.url), 'utf8');
-  app.get('/', async (request, reply) => reply.type('text/html').send(page));
-  app.get('/portal', async (request, reply) => {
-    if (!(await getSession(request))) return reply.redirect('/');
-    return reply.type('text/html').send(page);
-  });
+  const portalPage = await readFile(new URL('./public/index.html', import.meta.url), 'utf8');
+
+app.get('/portal', async (request, reply) => {
+  if (!(await getSession(request))) return reply.redirect('/');
+  return reply.type('text/html').send(portalPage);
+});
   for (const [path, name, type] of [['/portal.js', 'portal.js', 'text/javascript'], ['/portal.css', 'portal.css', 'text/css']]) {
     const content = await readFile(new URL(`./public/${name}`, import.meta.url), 'utf8');
     app.get(path, async (request, reply) => reply.type(type).send(content));
