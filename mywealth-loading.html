@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="noindex" />
+    <title>Opening myWealth | BNP Paribas Wealth Management</title>
+    <link rel="stylesheet" href="./mywealth-loading.css" />
+  </head>
+  <body class="mywealth-loading-page">
+    <header class="loading-header">
+      <a class="loading-brand" href="./index.html" aria-label="BNP Paribas Wealth Management home">
+        <span class="loading-symbol" aria-hidden="true"><img src="./src/assets/bnp-paribas-symbol.jpg" alt="" /></span>
+        <span class="loading-wordmark"><strong>BNP PARIBAS</strong><small>WEALTH MANAGEMENT</small></span>
+      </a>
+      <span class="loading-divider" aria-hidden="true"></span>
+      <p>The bank<br>for a changing world</p>
+    </header>
+
+    <main class="loading-hero">
+      <section class="loading-card" role="status" aria-live="polite" aria-labelledby="loading-title">
+        <span class="loading-ring" aria-hidden="true"></span>
+        <p class="loading-kicker">SECURE ACCESS</p>
+        <h1 id="loading-title">Opening myWealth</h1>
+        <p class="loading-copy">Preparing your private wealth overview.</p>
+        <div class="loading-progress" aria-hidden="true"><i id="loading-progress-bar"></i></div>
+        <p class="loading-status" id="loading-status">Loading your secure workspace…</p>
+      </section>
+      <p class="loading-commitment"><span></span>LUXEMBOURG<br><b>A LASTING COMMITMENT</b></p>
+    </main>
+
+    <footer class="loading-footer">
+      <p>Security <span></span> Legal information <span></span> Cookies <span></span> Help &amp; Contact</p>
+      <p>© 2026 BNP Paribas Wealth Management. All rights reserved.</p>
+    </footer>
+
+    <script>
+      const bar = document.getElementById('loading-progress-bar');
+      const status = document.getElementById('loading-status');
+      const duration = 2600;
+      const startedAt = performance.now();
+      const update = (now) => {
+        const progress = Math.min((now - startedAt) / duration, 1);
+        bar.style.width = `${Math.round(progress * 100)}%`;
+        if (progress < 1) {
+          requestAnimationFrame(update);
+          return;
+        }
+        status.textContent = 'Secure workspace ready.';
+        window.setTimeout(() => window.location.replace('./dashboard.html'), 180);
+      };
+      requestAnimationFrame(update);
+    </script>
+  </body>
+</html>

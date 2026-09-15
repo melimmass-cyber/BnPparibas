@@ -1,0 +1,27 @@
+/* Focus treatments are kept separate from the layout system. */
+.brand-monogram {
+  border-radius: 0;
+  background: #008f66;
+}
+
+.brand-monogram::before {
+  display: none;
+}
+
+.brand-monogram img {
+  position: absolute;
+  width: 74px;
+  max-width: none;
+  height: auto;
+  left: -28px;
+  top: -20px;
+}
+
+.site-header a:focus-visible,
+.button:focus-visible,
+.utility-bar button:focus-visible,
+.menu-toggle:focus-visible,
+.footer-grid a:focus-visible {
+  outline: 2px solid var(--acid);
+  outline-offset: 4px;
+}

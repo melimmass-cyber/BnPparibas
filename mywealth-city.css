@@ -1,0 +1,28 @@
+/* Licensed city photograph: see the on-page CC BY-SA credit. */
+.mw-main {
+  background-image:
+    linear-gradient(100deg, rgba(4, 41, 43, .83) 0%, rgba(15, 73, 70, .53) 44%, rgba(23, 65, 69, .11) 74%),
+    url('https://commons.wikimedia.org/wiki/Special:FilePath/Luxembourg%20(LU)%2C%20Grund%20und%20%C3%89glise%20Saint-Jean%20--%202023%20--%208132.jpg?width=1600') !important;
+  background-position: center;
+  background-size: cover;
+}
+
+.city-scene { display: none; }
+
+.photo-credit {
+  position: absolute;
+  z-index: 1;
+  right: 26px;
+  bottom: 13px;
+  margin: 0;
+  color: #fff;
+  font-size: 9px;
+  text-shadow: 0 1px 3px #000;
+}
+
+.photo-credit a { color: #fff; }
+.photo-credit a:focus-visible { outline: 2px solid #b7e86b; outline-offset: 2px; }
+
+@media (max-width: 760px) {
+  .photo-credit { right: 16px; bottom: 10px; font-size: 8px; }
+}

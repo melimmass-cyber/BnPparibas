@@ -1,0 +1,600 @@
+/* BNP Paribas Wealth Management - Main Stylesheet */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Inter', sans-serif;
+}
+
+:root {
+    --bnp-green: #008061;
+    --bnp-dark-green: #003B2F;
+    --bnp-light-green: #006a50;
+    --slate-50: #f8fafc;
+    --slate-100: #f1f5f9;
+    --slate-200: #e2e8f0;
+    --slate-300: #cbd5e1;
+    --slate-400: #94a3b8;
+    --slate-500: #64748b;
+    --slate-600: #475569;
+    --slate-700: #334155;
+    --slate-800: #1e293b;
+    --slate-900: #0f172a;
+}
+
+body {
+    background-color: var(--slate-50);
+    color: var(--slate-900);
+    line-height: 1.6;
+}
+
+button,
+input,
+select,
+textarea {
+    font: inherit;
+}
+
+:focus-visible {
+    outline: 3px solid rgba(0, 128, 97, 0.45);
+    outline-offset: 3px;
+}
+
+/* Animations */
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+@keyframes fadeIn {
+    from { 
+        opacity: 0; 
+        transform: scale(0.95); 
+    }
+    to { 
+        opacity: 1; 
+        transform: scale(1); 
+    }
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+}
+
+.animate-spin {
+    animation: spin 1s linear infinite;
+}
+
+.animate-in {
+    animation: fadeIn 0.2s ease-out;
+}
+
+.animate-pulse {
+    animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        scroll-behavior: auto !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+/* Transitions */
+.transition-all {
+    transition: all 0.3s ease;
+}
+
+button:active {
+    transform: scale(0.98);
+}
+
+/* Utility Classes */
+.bg-bnp-green { background-color: var(--bnp-green); }
+.bg-bnp-dark { background-color: var(--bnp-dark-green); }
+.text-bnp-green { color: var(--bnp-green); }
+.border-bnp-green { border-color: var(--bnp-green); }
+
+/* Loading Screen */
+.loading-screen {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    background-color: #f8f9fa;
+}
+
+.loading-spinner {
+    width: 3rem;
+    height: 3rem;
+    border: 4px solid var(--bnp-green);
+    border-top-color: transparent;
+    border-radius: 50%;
+}
+
+/* Login Page Styles */
+.login-container {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--bnp-dark-green);
+    padding: 1.5rem;
+    position: relative;
+    overflow: hidden;
+}
+
+.login-bg-blur {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 600px;
+    height: 600px;
+    background: var(--bnp-green);
+    border-radius: 50%;
+    filter: blur(120px);
+    opacity: 0.2;
+    transform: translate(50%, -50%);
+}
+
+.login-card {
+    max-width: 28rem;
+    width: 100%;
+    background: white;
+    border-radius: 2rem;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    padding: 2.5rem;
+    position: relative;
+    z-index: 10;
+}
+
+/* Dashboard Styles */
+.dashboard-header {
+    background: white;
+    border-bottom: 1px solid var(--slate-100);
+    height: 5rem;
+    display: flex;
+    align-items: center;
+    padding: 0 2rem;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 50;
+}
+
+/* Estate Hub Styles */
+.utility-bar {
+    background: var(--bnp-dark-green);
+    color: white;
+    padding: 0.5rem 1.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.6875rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.estate-header {
+    background: white;
+    border-bottom: 1px solid var(--slate-200);
+    position: sticky;
+    top: 0;
+    z-index: 50;
+}
+
+.estate-nav {
+    max-width: 80rem;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+    height: 5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* Hero Section */
+.hero-section {
+    background: white;
+    border-bottom: 1px solid var(--slate-200);
+    padding: 2.5rem 0;
+}
+
+/* Alert Box */
+.alert-box {
+    background: #fff9e6;
+    border-left: 4px solid #eab308;
+    padding: 1.5rem;
+    border-radius: 0 0.75rem 0.75rem 0;
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+}
+
+/* Card Styles */
+.card {
+    background: white;
+    border-radius: 1rem;
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+    border: 1px solid var(--slate-200);
+    overflow: hidden;
+}
+
+.card-header {
+    padding: 1.5rem;
+    border-bottom: 1px solid var(--slate-100);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* Table Styles */
+.table-container {
+    overflow-x: auto;
+}
+
+table {
+    width: 100%;
+    text-align: left;
+    border-collapse: collapse;
+}
+
+thead {
+    background: var(--slate-50);
+    font-size: 0.625rem;
+    text-transform: uppercase;
+    font-weight: 700;
+    color: var(--slate-400);
+    border-bottom: 1px solid var(--slate-100);
+}
+
+thead th {
+    padding: 1rem 1.5rem;
+}
+
+tbody tr {
+    border-bottom: 1px solid var(--slate-100);
+    transition: background-color 0.15s;
+}
+
+tbody tr:hover {
+    background: rgba(248, 250, 252, 0.5);
+}
+
+tbody td {
+    padding: 1.25rem 1.5rem;
+    font-size: 0.875rem;
+}
+
+/* Timeline Styles */
+.timeline {
+    position: relative;
+    padding-left: 2.5rem;
+    border-left: 2px solid var(--slate-100);
+    margin-left: 1rem;
+}
+
+.timeline-item {
+    position: relative;
+    margin-bottom: 3rem;
+}
+
+.timeline-icon {
+    position: absolute;
+    left: -3.2rem;
+    background: white;
+    border: 2px solid var(--bnp-green);
+    padding: 0.375rem;
+    border-radius: 50%;
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Vault Modal */
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 100;
+    background: rgba(15, 23, 42, 0.6);
+    backdrop-filter: blur(4px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+}
+
+.modal-content {
+    background: white;
+    border-radius: 1.5rem;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    max-width: 32rem;
+    width: 100%;
+    overflow: hidden;
+}
+
+.modal-header {
+    background: var(--bnp-dark-green);
+    padding: 2rem;
+    color: white;
+    position: relative;
+}
+
+.modal-body {
+    padding: 2rem;
+}
+
+/* Footer */
+footer {
+    max-width: 80rem;
+    margin: 0 auto;
+    padding: 3rem 1.5rem;
+    border-top: 1px solid var(--slate-200);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    /* Mobile Navigation */
+    nav {
+        height: auto !important;
+        flex-direction: column !important;
+        padding: 1rem !important;
+        gap: 1rem !important;
+    }
+    
+    nav > div:first-child {
+        flex-direction: column !important;
+        width: 100%;
+        gap: 1rem !important;
+    }
+    
+    nav > div:first-child > div {
+        display: none !important; /* Hide desktop nav tabs on mobile */
+    }
+    
+    /* Mobile Utility Bar */
+    .utility-bar {
+        font-size: 0.5rem;
+        padding: 0.5rem 1rem;
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+    
+    /* Mobile Estate Nav */
+    .estate-nav {
+        flex-direction: column;
+        height: auto;
+        padding: 1rem;
+        gap: 1rem;
+    }
+    
+    /* Mobile Hero Section */
+    .hero-section {
+        padding: 1.5rem 1rem !important;
+    }
+    
+    .hero-section > div {
+        padding: 0 !important;
+    }
+    
+    .hero-section h1 {
+        font-size: 1.5rem !important;
+    }
+    
+    /* Mobile Tables */
+    table {
+        font-size: 0.75rem;
+        display: block;
+        overflow-x: auto;
+    }
+    
+    thead th,
+    tbody td {
+        padding: 0.75rem 0.5rem;
+        font-size: 0.75rem;
+    }
+    
+    /* Mobile Cards */
+    .card {
+        margin: 0 1rem;
+    }
+    
+    /* Mobile Dashboard Grid */
+    main {
+        padding: 1rem !important;
+    }
+    
+    /* Mobile Timeline */
+    .timeline {
+        padding-left: 1.5rem;
+        margin-left: 0.5rem;
+    }
+    
+    .timeline-icon {
+        left: -2.5rem !important;
+    }
+    
+    /* Mobile Footer */
+    footer {
+        padding: 1.5rem 1rem !important;
+    }
+    
+    footer > div > div:first-child {
+        flex-direction: column;
+        gap: 1rem;
+    }
+    
+    /* Mobile Login */
+    .login-container {
+        padding: 1rem !important;
+    }
+    
+    .login-card {
+        padding: 1.5rem !important;
+        margin: 0 !important;
+    }
+    
+    /* Mobile Breadcrumb */
+    .breadcrumb {
+        padding: 0.75rem 1rem !important;
+        font-size: 0.75rem;
+    }
+    
+    /* Hide desktop-only elements */
+    @media (max-width: 640px) {
+        .hide-on-mobile {
+            display: none !important;
+        }
+    }
+    
+    /* Mobile Grid Adjustments */
+    [style*="grid-template-columns"] {
+        grid-template-columns: 1fr !important;
+    }
+    
+    /* Mobile Alert Banners */
+    [style*="padding: 2rem"] {
+        padding: 1rem !important;
+    }
+    
+    /* Mobile Language Selector */
+    .lang-selector {
+        top: 0.5rem !important;
+        right: 0.5rem !important;
+        padding: 0.25rem 0.5rem !important;
+        font-size: 0.75rem !important;
+    }
+}
+
+/* Tablet Breakpoint */
+@media (min-width: 769px) and (max-width: 1024px) {
+    nav > div:first-child > div {
+        gap: 1rem !important;
+    }
+    
+    nav a {
+        font-size: 0.875rem !important;
+    }
+    
+    main {
+        padding: 1.5rem !important;
+    }
+}
+
+/* Mobile-First BNP Banking App Style */
+@media (max-width: 768px) {
+    body {
+        font-size: 14px;
+    }
+    
+    /* Mobile Bottom Navigation (Like BNP App) */
+    .mobile-bottom-nav {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background: white;
+        border-top: 1px solid #E5E7EB;
+        display: flex;
+        justify-content: space-around;
+        padding: 0.75rem 0;
+        z-index: 100;
+        box-shadow: 0 -2px 10px rgba(0,0,0,0.05);
+    }
+    
+    .mobile-nav-item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.25rem;
+        padding: 0.5rem;
+        color: var(--slate-400);
+        text-decoration: none;
+        font-size: 0.625rem;
+        font-weight: 600;
+        transition: color 0.3s;
+    }
+    
+    .mobile-nav-item.active {
+        color: var(--bnp-green);
+    }
+    
+    .mobile-nav-item svg {
+        width: 1.5rem;
+        height: 1.5rem;
+    }
+    
+    /* Add bottom padding to main content for mobile nav */
+    body main {
+        padding-bottom: 5rem !important;
+    }
+    
+    /* Mobile Card Stacking */
+    [style*="display: flex"] {
+        flex-direction: column !important;
+        gap: 1rem !important;
+    }
+    
+    /* Mobile Typography */
+    h1 {
+        font-size: 1.5rem !important;
+    }
+    
+    h2 {
+        font-size: 1.25rem !important;
+    }
+    
+    h3 {
+        font-size: 1.125rem !important;
+    }
+}
+
+@media (max-width: 768px) {
+    /* Keep compact login controls horizontal; the page-level stacking rule above
+       is intended for content groups, not field controls or language buttons. */
+    .login-card [style*="display: flex"] {
+        flex-direction: row !important;
+    }
+
+    .login-card form[style*="display: flex"] {
+        flex-direction: column !important;
+    }
+}
+
+@media (max-width: 480px) {
+    .login-card {
+        border-radius: 1.25rem;
+    }
+
+    #mfaInput {
+        font-size: 1.5rem !important;
+        letter-spacing: 0.65rem !important;
+    }
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--slate-100);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--slate-300);
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--slate-400);
+}

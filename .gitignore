@@ -1,0 +1,15 @@
+node_modules/
+dist/
+.env
+.env.*
+!.env.example
+backups/
+work/
+.local-data/
+*.log
+mfa_codes.json
+
+node_modules/
+dist/
+.env
+.env.local

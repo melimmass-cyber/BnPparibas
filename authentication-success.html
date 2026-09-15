@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Authentication successful | myWealth</title>
+    <link rel="stylesheet" href="./authentication-success.css" />
+    <link rel="stylesheet" href="./mobile-refinements.css" />
+    <style>.success-steps li:last-child p{color:#284254!important;font-weight:400!important}</style>
+      <meta name="robots" content="noindex,nofollow">
+  </head>
+  <body class="success-page">
+    <header class="success-header">
+      <a class="success-brand" href="./index.html" aria-label="BNP Paribas Wealth Management home"><span class="success-symbol" aria-hidden="true"><img src="./src/assets/bnp-paribas-symbol.jpg" alt="" /></span><span class="success-wordmark"><strong>BNP PARIBAS</strong><small>WEALTH MANAGEMENT</small></span></a><span class="success-divider" aria-hidden="true"></span><p class="success-message">The bank<br>for a changing world</p>
+      <div class="success-actions"><div class="success-locale"><button type="button" id="locale-toggle" aria-expanded="false" aria-controls="locale-menu"><span id="locale-current">EN</span><b aria-hidden="true">⌄</b></button><div id="locale-menu" class="success-locale-menu" hidden><button type="button" data-locale="EN">English</button><button type="button" data-locale="FR">Français</button><button type="button" data-locale="DE">Deutsch</button></div></div><span class="success-divider small" aria-hidden="true"></span><button id="header-help" type="button" class="success-help"><span aria-hidden="true">?</span>Help &amp; Contact</button></div>
+    </header>
+    <main class="success-hero">
+      <div class="success-layout">
+        <section class="success-intro" aria-labelledby="intro-title"><p>YOUR WEALTH<br>COMMITMENT</p><i aria-hidden="true"></i><h1 id="intro-title">A more open<br>world for<br>your wealth</h1><b aria-hidden="true"></b><p>Expertise today<br>for tomorrow’s opportunities.</p></section>
+        <section class="success-card" aria-labelledby="success-title">
+          <ol class="success-steps" aria-label="Access progress"><li class="done"><span>1</span><p>Client identification</p></li><li class="done"><span>2</span><p>Authentication method</p></li><li class="active"><span>3</span><p>Connecting to LuxTrust Mobile</p></li><li><span>4</span><p>Access myWealth</p></li></ol>
+          <div class="success-body"><div class="success-main"><p class="success-luxtrust">LUXTRUST<sup>®</sup><small>TRUSTED DIGITAL IDENTITY</small></p><div class="checkmark" aria-hidden="true">✓</div><h2 id="success-title">Authentication successful!</h2><p class="success-copy">Your identity has been successfully verified with LuxTrust.<br>You will be redirected to BNP Paribas myWealth in a few seconds...</p><div class="redirect-progress" aria-hidden="true"><i id="progress-bar"></i></div><p class="redirect-status">Redirecting in <span id="redirect-time">4</span> seconds...</p><button type="button" id="go-now" class="go-now">Go to myWealth now <b aria-hidden="true">⟶</b></button></div>
+            <aside class="success-side"><section><span class="secure-icon shield" aria-hidden="true">✓</span><div><strong>Your connection is secure</strong><p>You are now authenticated<br>with LuxTrust. You will be<br>redirected to BNP Paribas<br>myWealth.</p></div></section><section><span class="secure-icon info" aria-hidden="true">i</span><div><strong>Did not redirect?</strong><p>If you are not redirected<br>automatically, click the button<br>“Go to myWealth now”.</p></div></section></aside>
+          </div>
+        </section>
+      </div>
+      <p class="success-commitment"><span></span>LUXEMBOURG<br><b>A LASTING COMMITMENT</b></p><p class="success-credit">Photo: <a href="https://commons.wikimedia.org/wiki/File:Luxembourg_(LU),_Grund_und_%C3%89glise%20Saint-Jean_--_2023_--_8132.jpg" target="_blank" rel="noreferrer">Dietmar Rabich / CC BY-SA 4.0</a></p>
+    </main>
+    <footer class="success-footer"><nav><button type="button" data-info="Security">Security</button><button type="button" data-info="Legal information">Legal information</button><button type="button" data-info="Cookies">Cookies</button><button type="button" data-info="Accessibility">Accessibility</button><button type="button" data-info="Help & Contact">Help &amp; Contact</button></nav><p class="success-proud"><span><i></i><i></i></span>PROUDLY LUXEMBOURGISH<br><b>TRUSTED WORLDWIDE</b></p></footer>
+    <dialog id="success-dialog" class="success-dialog" aria-labelledby="dialog-title"><button type="button" class="dialog-close" aria-label="Close">×</button><h2 id="dialog-title"></h2><p id="dialog-copy"></p><button type="button" class="dialog-button">Close</button></dialog>
+    <script>
+      const goNow = () => window.location.replace('./mywealth-loading.html');
+      document.getElementById('go-now').addEventListener('click', goNow);
+      let seconds = 4; const time = document.getElementById('redirect-time'), progress = document.getElementById('progress-bar');
+      const updateRedirect = () => { time.textContent = seconds; progress.style.width = `${65 + (4 - seconds) * 8.75}%`; if (seconds <= 0) { clearInterval(redirectTimer); goNow(); } seconds -= 1; };
+      updateRedirect(); const redirectTimer = window.setInterval(updateRedirect, 1000);
+      const dialog = document.getElementById('success-dialog'), title = document.getElementById('dialog-title'), copy = document.getElementById('dialog-copy'); const showInfo = (heading, message) => { title.textContent = heading; copy.textContent = message; dialog.showModal(); };
+      document.getElementById('header-help').addEventListener('click', () => showInfo('Help & Contact', 'For support with access to myWealth, contact your relationship manager or client service team.'));
+      document.querySelectorAll('[data-info]').forEach(button => button.addEventListener('click', () => showInfo(button.dataset.info, 'This information is available through your relationship manager in this local demonstration.')));
+      dialog.querySelector('.dialog-close').addEventListener('click', () => dialog.close()); dialog.querySelector('.dialog-button').addEventListener('click', () => dialog.close()); dialog.addEventListener('click', event => { if (event.target === dialog) dialog.close(); });
+      const toggle = document.getElementById('locale-toggle'), menu = document.getElementById('locale-menu'); toggle.addEventListener('click', () => { const open = toggle.getAttribute('aria-expanded') === 'true'; toggle.setAttribute('aria-expanded', String(!open)); menu.hidden = open; }); document.querySelectorAll('[data-locale]').forEach(button => button.addEventListener('click', () => { document.getElementById('locale-current').textContent = button.dataset.locale; toggle.setAttribute('aria-expanded', 'false'); menu.hidden = true; }));
+    </script>
+  </body>
+</html>

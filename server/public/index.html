@@ -1,0 +1,12 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Wealth portal · Integration workspace</title><link rel="stylesheet" href="/portal.css"><script src="/portal.js" defer></script></head>
+<body><main><p class="eyebrow">WEALTH PORTAL</p><h1>Your secure workspace</h1>
+<p class="intro">Access your workspace through your identity provider.</p>
+<p id="status" role="status">Checking service availability…</p>
+<section id="sign-in" hidden><h2>Sign in</h2><p>Continue to your provider to verify your identity. Credentials and verification codes are entered only on the provider’s website.</p><a id="login" href="/auth/login" hidden>Continue to identity provider</a></section>
+<section id="workspace" hidden><h2>Workspace</h2><p>You are signed in. Account data and payment services will be available once the financial integration is connected.</p>
+<dl><dt>Accounts</dt><dd>Not connected</dd><dt>Transfers</dt><dd>Not connected</dd><dt>Documents</dt><dd>Not connected</dd></dl>
+<form id="preferences"><label for="language">Preferred language</label><select id="language"><option value="en">English</option><option value="fr">Français</option><option value="de">Deutsch</option></select><button type="submit">Save preference</button></form>
+<button id="logout" type="button">Sign out of portal</button></section>
+<footer>Integration workspace · Financial services are not yet connected.</footer></main></body></html>
