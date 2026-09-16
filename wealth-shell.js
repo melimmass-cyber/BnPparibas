@@ -48,7 +48,7 @@ function shell() {
   return [
     '<header class="portal-header">',
       '<a class="portal-brand" href="./dashboard.html" aria-label="BNP Paribas Wealth Management dashboard">',
-        '<span class="brand-symbol" aria-hidden="true"><img src="./src/assets/bnp-paribas-symbol.jpg" alt=""></span>',
+        '<span class="brand-symbol" aria-hidden="true"><img src="/assets/site-logo.png" alt=""></span>',
         '<span class="brand-wordmark"><strong>BNP PARIBAS</strong><small>WEALTH MANAGEMENT</small></span>',
       '</a>',
       '<span class="header-divider" aria-hidden="true"></span>',
