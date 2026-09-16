@@ -548,3 +548,14 @@ button:focus-visible, a:focus-visible {
   .header-tools { gap: 4px; }
   .profile-avatar { width: 32px; height: 32px; font-size: 12px; }
 }
+  .brand-symbol img,
+.brand-symbol-img {
+  position: static !important;
+  top: auto !important;
+  left: auto !important;
+  display: block;
+  width: 100% !important;
+  height: 100% !important;
+  max-width: 100% !important;
+  object-fit: contain;
+}

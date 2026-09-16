@@ -7,3 +7,14 @@
       @media (max-width:1030px) { .site-header .brand-symbol { flex-basis:46px; width:46px; height:46px; } .site-header .brand-symbol img { top:-24px; left:-34px; width:90px; height:90px; } .brand-wordmark strong { font-size:19px; } .brand-wordmark small { font-size:12px; } }
       @media (max-width:760px) { .site-header .brand-symbol { flex-basis:39px; width:39px; height:39px; } .site-header .brand-symbol img { top:-20px; left:-29px; width:76px; height:76px; } .brand-wordmark strong { font-size:15px; } .brand-wordmark small { margin-top:3px; font-size:9px; } }
       @media (max-width:430px) { .site-header .brand-symbol { flex-basis:34px; width:34px; height:34px; } .site-header .brand-symbol img { top:-18px; left:-25px; width:67px; height:67px; } .brand-wordmark strong { font-size:13px; } .brand-wordmark small { font-size:8px; } }
+      .site-header .brand-symbol img,
+.site-header .brand-symbol-img {
+  position: static !important;
+  top: auto !important;
+  left: auto !important;
+  display: block;
+  width: 100% !important;
+  height: 100% !important;
+  max-width: 100% !important;
+  object-fit: contain;
+}
