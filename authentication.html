@@ -37,15 +37,6 @@
     <footer class="auth-footer"><nav><button type="button" data-dialog="security">Security</button><button type="button" data-dialog="legal">Legal information</button><button type="button" data-dialog="cookies">Cookies</button><button type="button" data-dialog="accessibility">Accessibility</button><button type="button" data-dialog="help">Help &amp; Contact</button></nav><p class="luxembourg-proud"><span><i></i><i></i></span>PROUDLY LUXEMBOURGISH<br><b>TRUSTED WORLDWIDE</b></p></footer>
 
     <dialog id="access-dialog" class="auth-dialog" aria-labelledby="dialog-title"><button type="button" class="dialog-close" aria-label="Close">×</button><h2 id="dialog-title"></h2><p id="dialog-copy"></p><div class="dialog-actions"><button type="button" class="dialog-secondary">Cancel</button><button type="button" class="dialog-primary">Continue</button></div></dialog>
-    <script>
-      const dialog = document.getElementById('access-dialog'), dialogTitle = document.getElementById('dialog-title'), dialogCopy = document.getElementById('dialog-copy');
-      const openDialog = (title, copy, continueAction) => { dialogTitle.textContent = title; dialogCopy.textContent = copy; dialog.dataset.action = continueAction || ''; dialog.showModal(); };
-      document.querySelectorAll('[data-method]').forEach(button => button.addEventListener('click', () => { if (button.dataset.method === 'mobile') window.location.replace('./connecting.html'); else openDialog('Another authentication method', 'Select a method available to you, such as a code card or SMS. This local demonstration will continue to your myWealth overview.', 'dashboard'); }));
-      document.getElementById('cancel').addEventListener('click', () => window.location.assign('./mywealth.html'));
-      document.getElementById('help-button').addEventListener('click', () => openDialog('Help & Contact', 'For help with access to myWealth, contact your relationship manager or client service team.'));
-      document.querySelectorAll('[data-dialog]').forEach(button => button.addEventListener('click', () => openDialog(button.textContent, 'This local myWealth demonstration keeps the selected information available in the interface only.')));
-      dialog.querySelector('.dialog-close').addEventListener('click', () => dialog.close()); dialog.querySelector('.dialog-secondary').addEventListener('click', () => dialog.close()); dialog.querySelector('.dialog-primary').addEventListener('click', () => { if (dialog.dataset.action === 'dashboard') window.location.replace('./authentication-success.html'); else dialog.close(); }); dialog.addEventListener('click', event => { if (event.target === dialog) dialog.close(); });
-      const localeToggle = document.getElementById('locale-toggle'), localeMenu = document.getElementById('locale-menu'); localeToggle.addEventListener('click', () => { const open = localeToggle.getAttribute('aria-expanded') === 'true'; localeToggle.setAttribute('aria-expanded', String(!open)); localeMenu.hidden = open; }); document.querySelectorAll('[data-locale]').forEach(button => button.addEventListener('click', () => { document.getElementById('locale-current').textContent = button.dataset.locale; localeToggle.setAttribute('aria-expanded', 'false'); localeMenu.hidden = true; }));
-    </script>
+    <script src="/csp/authentication-inline.js"></script>
   </body>
 </html>

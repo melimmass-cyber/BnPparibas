@@ -1,0 +1,10 @@
+const goNow = () => window.location.replace('./mywealth-loading.html');
+      document.getElementById('go-now').addEventListener('click', goNow);
+      let seconds = 4; const time = document.getElementById('redirect-time'), progress = document.getElementById('progress-bar');
+      const updateRedirect = () => { time.textContent = seconds; progress.style.width = `${65 + (4 - seconds) * 8.75}%`; if (seconds <= 0) { clearInterval(redirectTimer); goNow(); } seconds -= 1; };
+      updateRedirect(); const redirectTimer = window.setInterval(updateRedirect, 1000);
+      const dialog = document.getElementById('success-dialog'), title = document.getElementById('dialog-title'), copy = document.getElementById('dialog-copy'); const showInfo = (heading, message) => { title.textContent = heading; copy.textContent = message; dialog.showModal(); };
+      document.getElementById('header-help').addEventListener('click', () => showInfo('Help & Contact', 'For support with access to myWealth, contact your relationship manager or client service team.'));
+      document.querySelectorAll('[data-info]').forEach(button => button.addEventListener('click', () => showInfo(button.dataset.info, 'This information is available through your relationship manager in this local demonstration.')));
+      dialog.querySelector('.dialog-close').addEventListener('click', () => dialog.close()); dialog.querySelector('.dialog-button').addEventListener('click', () => dialog.close()); dialog.addEventListener('click', event => { if (event.target === dialog) dialog.close(); });
+      const toggle = document.getElementById('locale-toggle'), menu = document.getElementById('locale-menu'); toggle.addEventListener('click', () => { const open = toggle.getAttribute('aria-expanded') === 'true'; toggle.setAttribute('aria-expanded', String(!open)); menu.hidden = open; }); document.querySelectorAll('[data-locale]').forEach(button => button.addEventListener('click', () => { document.getElementById('locale-current').textContent = button.dataset.locale; toggle.setAttribute('aria-expanded', 'false'); menu.hidden = true; }));
