@@ -164,7 +164,7 @@ app.get('/portal', async (request, reply) => {
     const content = await readFile(new URL(`./public/${name}`, import.meta.url), 'utf8');
     app.get(path, async (request, reply) => reply.type(type).send(content));
   }
-  for (const path of ['/mywealth.html', '/index.html']) app.get(path, async (request, reply) => reply.redirect('/'));
+  app.get('/index.html', async (request, reply) => reply.redirect('/'));
   for (const path of ['/dashboard.html', '/accounts.html', '/estate-hub.html', '/documents.html', '/transfers.html', '/settings.html']) app.get(path, async (request, reply) => reply.redirect('/portal'));
   for (const path of ['/authentication.html', '/connecting.html', '/authentication-wait.html', '/authentication-success.html', '/mywealth-loading.html']) app.get(path, async (request, reply) => fail(reply, 410, 'DEMO_AUTHENTICATION_REMOVED'));
   return app;
