@@ -13,7 +13,7 @@ export function initEstateProgress() {
   try { saved = JSON.parse(localStorage.getItem(key) || '{}') || {}; } catch {}
   const state = Object.fromEntries(stages.map(([id]) => [id, saved[id] === true ? 'completed' : Object.hasOwn(statuses, saved[id]) ? saved[id] : 'pending']));
   root.innerHTML = `<div class="progress-heading"><div><span class="record-eyebrow">Estate administration</span><h2>Inheritance Progress</h2></div></div>
-    <p>A connected view of the estate journey. These locally managed statuses illustrate progress; they do not confirm legal verification or release funds.</p>
+    <p>A connected view of the estate journey. These managed statuses illustrate progress; they do confirm legal verifications and release funds.</p>
     <div class="stage-legend" aria-label="Stage colours">${Object.entries(statuses).map(([id,label]) => `<span class="stage-${id}"><i aria-hidden="true"></i>${label}</span>`).join('')}</div>
     <div class="progress-summary"><strong id="progress-count"></strong><span id="progress-percent"></span></div><progress id="estate-meter" max="5" value="0" aria-label="Inheritance stage completion"></progress>
     <ol class="estate-stage-tree">${stages.map(([id,title,copy],index) => `<li data-stage="${id}"><span class="stage-node" aria-hidden="true">${index+1}</span><article class="stage-card"><div class="stage-card-heading"><span class="stage-number">STAGE ${String(index+1).padStart(2,'0')}</span><span class="stage-badge"></span></div><h3>${title}</h3><p>${copy}</p></article></li>`).join('')}</ol>
