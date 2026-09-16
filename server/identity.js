@@ -6,7 +6,7 @@ export async function createIdentityProvider(config, transport) {
     { client_secret: config.clientSecret }, oidc.ClientSecretBasic(config.clientSecret),
     { timeout: 10, ...(transport ? { [oidc.customFetch]: transport } : {}) });
   oidc.enableNonRepudiationChecks(client);
-  const redirectUri = `${config.origin}/auth/callback`;
+  const redirectUri = `${config.apiOrigin}/auth/callback`;
   return {
     async begin() {
       const verifier = oidc.randomPKCECodeVerifier();

@@ -2,6 +2,7 @@ import Fastify, { LogController } from 'fastify';
 import cookie from '@fastify/cookie';
 import helmet from '@fastify/helmet';
 import fastifyStatic from '@fastify/static';
+import cors from '@fastify/cors';
 import { randomUUID } from 'node:crypto';
 import { readFile } from 'node:fs/promises';
 import { dirname, join } from 'node:path';
@@ -18,12 +19,21 @@ export async function buildApp({ config, store, identity, logger = true }) {
     requestTimeout: 15_000, connectionTimeout: 20_000,
     ajv: { customOptions: { removeAdditional: false, coerceTypes: false } },
   });
-  const secure = config.origin.startsWith('https:');
+  const secure = config.apiOrigin.startsWith('https:');
   const sessionCookie = secure ? '__Host-portal_session' : 'portal_session';
   const loginCookie = secure ? '__Host-portal_login' : 'portal_login';
   const cookieOptions = { path: '/', httpOnly: true, secure, sameSite: 'lax' };
   const fail = (reply, status, code) => reply.code(status).send({ error: { code, requestId: reply.request.id } });
   await app.register(cookie);
+await app.register(cors, {
+  origin: config.frontendOrigin,
+  credentials: true,
+  methods: ['GET', 'HEAD', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: [
+    'Content-Type',
+    'X-CSRF-Token',
+  ],
+});
   await app.register(helmet, {
     contentSecurityPolicy: { directives: {
       defaultSrc: ["'none'"], scriptSrc: ["'self'"], styleSrc: ["'self'"],
@@ -37,6 +47,7 @@ await app.register(fastifyStatic, {
   root: frontendRoot,
   prefix: '/',
   index: ['index.html'],
+  cacheControl: false,
 });
   app.decorateRequest('portalSession', null);
   app.addHook('onRequest', async (request, reply) => {
@@ -74,7 +85,7 @@ await app.register(fastifyStatic, {
     request.portalSession = await getSession(request);
     if (!request.portalSession) return fail(reply, 401, 'AUTHENTICATION_REQUIRED');
     if (!['GET', 'HEAD', 'OPTIONS'].includes(request.method) &&
-      (request.headers.origin !== config.origin || !equal(request.headers['x-csrf-token'], request.portalSession.csrf_token))) {
+      (request.headers.origin !== config.frontendOrigin || !equal(request.headers['x-csrf-token'], request.portalSession.csrf_token))) {
       return fail(reply, 403, 'CSRF_REJECTED');
     }
   };
@@ -110,8 +121,8 @@ await app.register(fastifyStatic, {
     let principal;
     try {
       // Fixed origin prevents Host/X-Forwarded-Host from changing the redirect URI.
-      const callbackUrl = new URL('/auth/callback', config.origin);
-      callbackUrl.search = new URL(request.url, config.origin).search;
+      const callbackUrl = new URL('/auth/callback', config.apiOrigin);
+      callbackUrl.search = new URL(request.url, config.apiOrigin).search;
       principal = await identity.complete(callbackUrl, unseal(encrypted, config.encryptionKey));
     } catch {
       await store.audit('login.rejected', request.id);

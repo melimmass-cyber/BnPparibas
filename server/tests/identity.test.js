@@ -6,7 +6,13 @@ import { createIdentityProvider } from '../identity.js';
 const { privateKey, publicKey } = generateKeyPairSync('rsa', { modulusLength: 2048 });
 const jwk = { ...publicKey.export({ format: 'jwk' }), kid: 'test-key', alg: 'RS256', use: 'sig' };
 const issuer = 'https://identity.example';
-const config = { issuer, clientId: 'portal-client', clientSecret: 'test-secret', origin: 'https://portal.example', requiredAcr: 'urn:test:mfa' };
+const config = {
+  issuer,
+  clientId: 'portal-client',
+  clientSecret: 'test-secret',
+  apiOrigin: 'https://api.example',
+  requiredAcr: 'urn:test:mfa'
+};
 const json = value => new Response(JSON.stringify(value), { status: 200, headers: { 'content-type': 'application/json' } });
 function jwt(payload, corrupt) {
   const input = `${Buffer.from(JSON.stringify({ alg: 'RS256', kid: 'test-key' })).toString('base64url')}.${Buffer.from(JSON.stringify(payload)).toString('base64url')}`;
@@ -28,7 +34,7 @@ async function setup(overrides = {}, corrupt = false) {
       tokenRequests++;
       const body = new URLSearchParams(options.body);
       assert.equal(body.get('code_verifier'), transaction.verifier);
-      assert.equal(body.get('redirect_uri'), `${config.origin}/auth/callback`);
+      assert.equal(body.get('redirect_uri'), `${config.apiOrigin}/auth/callback`);
       const now = Math.floor(Date.now() / 1000);
       return json({ access_token: 'never-persist-this', token_type: 'Bearer', expires_in: 600,
         id_token: jwt({ iss: issuer, sub: 'subject-123', aud: config.clientId, iat: now, exp: now + 600, nonce: transaction.nonce, acr: config.requiredAcr, auth_time: now, ...overrides }, corrupt),
@@ -46,7 +52,7 @@ test('real OIDC library validates signed ID token, PKCE, nonce and required MFA 
   assert.equal(authorization.searchParams.get('code_challenge_method'), 'S256');
   assert.equal(authorization.searchParams.get('acr_values'), config.requiredAcr);
   assert.equal(authorization.searchParams.get('scope'), 'openid');
-  const result = await provider.complete(new URL(`${config.origin}/auth/callback?code=test&state=${transaction.state}`), transaction);
+  const result = await provider.complete(new URL(`${config.apiOrigin}/auth/callback?code=test&state=${transaction.state}`), transaction);
   assert.deepEqual(result, { issuer, subject: 'subject-123' });
   assert.equal(calls().tokenRequests, 1);
   assert.equal(calls().jwksRequests, 1);
@@ -59,11 +65,11 @@ test('OIDC rejects invalid signatures, nonce, issuer, audience, expiry, auth age
   ];
   for (const [name, overrides, corrupt] of cases) await t.test(name, async () => {
     const { provider, transaction } = await setup(overrides, corrupt);
-    await assert.rejects(provider.complete(new URL(`${config.origin}/auth/callback?code=test&state=${transaction.state}`), transaction));
+    await assert.rejects(provider.complete(new URL(`${config.apiOrigin}/auth/callback?code=test&state=${transaction.state}`), transaction));
   });
 });
 test('OIDC rejects wrong state before exchanging authorization code', async () => {
   const { provider, transaction, calls } = await setup();
-  await assert.rejects(provider.complete(new URL(`${config.origin}/auth/callback?code=test&state=wrong`), transaction));
+  await assert.rejects(provider.complete(new URL(`${config.apiOrigin}/auth/callback?code=test&state=wrong`), transaction));
   assert.equal(calls().tokenRequests, 0);
 });

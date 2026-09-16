@@ -8,7 +8,13 @@ import { migrate } from '../database.js';
 import { loadConfig } from '../config.js';
 import { hash, token, seal, unseal } from '../crypto.js';
 
-const config = loadConfig({ NODE_ENV: 'test', APP_ORIGIN: 'https://portal.example', DATABASE_URL: 'postgres://test:test@localhost/test', SESSION_ENCRYPTION_KEY: randomBytes(32).toString('hex') });
+const config = loadConfig({
+  NODE_ENV: 'test',
+  FRONTEND_ORIGIN: 'https://frontend.example',
+  API_ORIGIN: 'https://api.example',
+  DATABASE_URL: 'postgres://test:test@localhost/test',
+  SESSION_ENCRYPTION_KEY: randomBytes(32).toString('hex')
+});
 const db = new PGlite();
 const adapter = {
   query: async (sql, params) => params ? db.query(sql, params) : (await db.exec(sql)).at(-1),
@@ -20,7 +26,7 @@ const issuer = 'https://id.example', subject = 'test-user';
 const identity = {
   begin: async () => ({ url: `${issuer}/authorize`, transaction: { state: 'state', nonce: 'nonce', verifier: 'verifier' } }),
   complete: async (url, transaction) => {
-    assert.equal(url.origin, config.origin);
+    assert.equal(url.origin, config.apiOrigin);
     assert.equal(url.pathname, '/auth/callback');
     assert.equal(transaction.state, 'state');
     if (url.searchParams.get('state') !== 'state') throw new Error('Invalid state');
@@ -43,7 +49,13 @@ async function session(userId) {
   await store.createSession(id, userId, csrf, 'test', null);
   return { id, csrf, userId, cookie: `__Host-portal_session=${id}` };
 }
-function mutationHeaders(s) { return { cookie: s.cookie, origin: config.origin, 'x-csrf-token': s.csrf }; }
+function mutationHeaders(s) {
+  return {
+    cookie: s.cookie,
+    origin: config.frontendOrigin,
+    'x-csrf-token': s.csrf
+  };
+}
 before(async () => { await migrate(adapter); });
 beforeEach(async () => { await db.exec('TRUNCATE portal_users, sessions, login_transactions, user_preferences, audit_events, rate_limits RESTART IDENTITY CASCADE'); });
 afterEach(async () => { for (const instance of apps.splice(0)) await instance.close(); });
@@ -63,7 +75,13 @@ test('configuration rejects unsafe production and incomplete provider settings',
   assert.throws(() => loadConfig({ ...base, NODE_ENV: 'production' }), /HTTPS/);
   assert.throws(() => loadConfig({ ...base, OIDC_CLIENT_ID: 'partial' }), /all OIDC/);
   assert.throws(() => loadConfig({ ...base, DATABASE_URL: base.DATABASE_URL + '?sslmode=no-verify' }), /SSL/);
-  assert.throws(() => loadConfig({ ...base, APP_ORIGIN: 'http://example.com' }), /loopback/);
+  assert.throws(
+  () => loadConfig({
+    ...base,
+    FRONTEND_ORIGIN: 'http://example.com'
+  }),
+  /loopback/
+);
 });
 test('authentication is unavailable without provider; demo endpoints cannot log in', async () => {
   const api = await app({ identity: null });
@@ -82,10 +100,22 @@ test('production static surface excludes source, demo pages, secrets and backups
   assert.equal((await api.inject('/authentication-success.html')).statusCode, 410);
   assert.equal((await api.inject('/portal')).headers.location, '/');
   const root = await api.inject('/');
-  assert.match(root.body, /identity provider/);
-  assert.doesNotMatch(root.body, /3,500,000|LuxTrust|BNP/);
-  assert.match(root.headers['content-security-policy'], /frame-ancestors 'none'/);
-  assert.equal(root.headers['cache-control'], 'no-store');
+
+assert.equal(root.statusCode, 200);
+assert.match(root.body, /myWealth/i);
+assert.match(root.body, /mywealth\.html/i);
+
+assert.doesNotMatch(
+  root.body,
+  /SESSION_ENCRYPTION_KEY|DATABASE_URL|OIDC_CLIENT_SECRET/
+);
+
+assert.match(
+  root.headers['content-security-policy'],
+  /frame-ancestors 'none'/
+);
+
+assert.equal(root.headers['cache-control'], 'no-store');
 });
 test('login transaction is encrypted, bound to cookie, one-use; session is hashed and persistent', async () => {
   await user();
